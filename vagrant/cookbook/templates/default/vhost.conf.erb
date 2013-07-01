@@ -1,0 +1,11 @@
+User vagrant
+Group vagrant
+
+<VirtualHost *:80>
+    Servername rubygarage.dev
+    Serveralias 192.168.56.101
+    DocumentRoot /mnt/RubyGarageTask/web
+    <Directory "/mnt/RubyGarageTask/web">
+        AllowOverride All
+    </Directory>
+</VirtualHost>
