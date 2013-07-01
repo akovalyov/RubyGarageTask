@@ -17,7 +17,7 @@ Vagrant::Config.run do |config|
   config.vm.network :hostonly, "192.168.56.101"
   config.vm.share_folder "v-root", "/mnt/RubyGarageTask", ".." , :nfs => true
 
-  # Whithout this symlinks can't be created on the shared folder.
+  # Without this symlinks can't be created on the shared folder.
   config.vm.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root", "1"]
 
   # Chef solo configuration.

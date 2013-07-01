@@ -27,7 +27,7 @@ helpers
 layout
 */
 body {
-    background: url('../img/background.png') top left repeat-x #ab510b;
+    background: url('../../img/background.png') top left repeat-x #ab510b;
 }
 
 .header {

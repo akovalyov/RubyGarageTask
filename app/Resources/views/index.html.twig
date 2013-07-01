@@ -1,4 +1,13 @@
 {% extends "::base.html.twig" %}
+{% block stylesheets %}
+    {% stylesheets
+    'assets/css/dev/bootstrap/*'
+    'assets/css/dev/*'
+    filter='cssrewrite'
+    output='assets/css/prod/index.css' %}
+    <link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen"/>
+    {% endstylesheets %}
+{% endblock %}
 {% block body %}
     <div id="wrapper">
         <div class="container header">
@@ -13,7 +22,7 @@
                 </div>
             </div>
         </div>
-        <div class="container content">
+        <div class="container content" data-controller="project">
             <div class="row todo">
                 <div class="span12 project_title">
                     <div class="row">
@@ -100,4 +109,7 @@
             </div>
         </div>
     </div>
+{% endblock %}
+{% block javascripts %}
+<script src="/assets/js/steal/steal.js?rubygarage"></script>
 {% endblock %}

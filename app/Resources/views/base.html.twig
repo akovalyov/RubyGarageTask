@@ -4,10 +4,7 @@
     <meta charset="UTF-8"/>
     <title>{% block title %}Welcome!{% endblock %}</title>
     {% block stylesheets %}
-        {% stylesheets filter='cssrewrite'
-        '../app/Resources/public/*' %}
-        <link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen"/>
-        {% endstylesheets %}
+
     {% endblock %}
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
 </head>

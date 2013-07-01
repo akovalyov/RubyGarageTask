@@ -80,7 +80,7 @@ end
 bash "Running composer install and preparing the Sylius repository" do
   not_if "test -e /vagrant/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Resources/public"
   user "vagrant"
-  cwd "/mnt/sylius"
+  cwd "/mnt/RubyGarageTask"
   code <<-EOH
     set -e
     curl -s https://getcomposer.org/installer | php
