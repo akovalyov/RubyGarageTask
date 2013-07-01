@@ -1,0 +1,137 @@
+#template {
+    /*background:url('../../../../assets/layout/rg_test_task_grid.png');*/
+    top: 0;
+    left: 410px;
+    position: absolute;
+    height: 1020px;
+    width: 1020px;
+    z-index: -1;
+    opacity: 0.5;
+}
+
+/**
+helpers
+*/
+.uppercase {
+    text-transform: uppercase;
+}
+
+.icon-with-margin {
+    margin: 15px 0;
+}
+.icon-move{
+    cursor:move;
+}
+
+/**
+layout
+*/
+body {
+    background: url('../../../../assets/img/background.png') top left repeat-x #ab510b;
+}
+
+.header {
+    text-align: center;
+    padding: 50px 0;
+}
+
+.header h2, .header h3 {
+    padding: 0;
+    margin: 0;
+}
+
+/**
+project list
+*/
+.project_title {
+    color: #ffffff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    background-color: #006dcc;
+    *background-color: #0044cc;
+    background-image: -moz-linear-gradient(top, #0088cc, #0044cc);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0044cc));
+    background-image: -webkit-linear-gradient(top, #0088cc, #0044cc);
+    background-image: -o-linear-gradient(top, #0088cc, #0044cc);
+    background-image: linear-gradient(to bottom, #0088cc, #0044cc);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0044cc', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+    background-repeat: repeat-x;
+    border-color: #0044cc #0044cc #002a80;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    padding: 10px;
+}
+
+.project_title .project_name, .project_title .project_icon {
+    height: 45px;
+    line-height: 45px;
+
+}
+
+.add_task {
+    background-color: #f5f5f5;
+    *background-color: #e6e6e6;
+    background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));
+    background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
+    background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
+    background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe6e6e6', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+    *zoom: 1;
+
+    padding: 10px;
+}
+
+.add_task form {
+    margin: 0;
+}
+
+.add_task input {
+    height: 30px;
+}
+
+.add_task .input-append {
+    margin: 5px 0 0 0 !important;
+}
+
+.list_of_tasks {
+    padding: 0 10px 10px 10px;
+    background: #fff;
+    border-bottom: 1px solid #ccc;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.list_of_tasks .list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width:940px;
+}
+
+.task {
+    border: 1px solid #e7ebea;
+    border-top:none;
+    width:938px;
+}
+.task:nth-child(even){
+    background-color:#eee;
+}
+.task:hover{
+    background-color: #fcfed5;
+    cursor: pointer;
+
+}
+/*.task .done, .task .name {*/
+    /*height: 45px;*/
+/*}*/
+.task .done{
+    padding:15px 0 0 25px;
+    width:50px !important;
+}
+.task .name{
+    width:680px !important;
+    padding: 15px 0 15px 0 !important;
+
+}
