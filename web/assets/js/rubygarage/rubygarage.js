@@ -1,10 +1,9 @@
 steal('jquery/controller').then(function ($) {
+    //declaring controllers
     $.Controller('Project', {}, {
         init: function () {
-            alert('asd');
         }
     });
-
 
 
     //initializing controllers

@@ -11,8 +11,10 @@
 class_name: WebGuy
 modules:
     enabled:
-        - PhpBrowser
+        - Selenium2
         - WebHelper
     config:
-        PhpBrowser:
-            url: 'http://localhost/myapp/'
+        Selenium2:
+            url: 'http://192.168.56.101/'
+            capabilities:
+                unexpectedAlertBehaviour: 'accept'

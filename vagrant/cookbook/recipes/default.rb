@@ -77,7 +77,7 @@ execute "check if date.timezone is UTC in /etc/php5/cli/php.ini?" do
   command "sed -i 's/;date.timezone =.*/date.timezone = UTC/g' /etc/php5/cli/php.ini"
 end
 
-bash "Running composer install and preparing the Sylius repository" do
+bash "Running composer install and preparing the vendors repository" do
   not_if "test -e /vagrant/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Resources/public"
   user "vagrant"
   cwd "/mnt/RubyGarageTask"
