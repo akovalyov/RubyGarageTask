@@ -58,6 +58,7 @@
         var templates = [];
         {% javascripts
         "%kernel.root_dir%/Resources/views/client/project.html.twig"
+        "%kernel.root_dir%/Resources/views/client/project_form.html.twig"
         filter="twig_js, ?yui_js" %}
         //create a list of templates which should be loaded on client
         templates.push("{{ asset_url }}".replace(/\/app(.*?).php\//, ""));
