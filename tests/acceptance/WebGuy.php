@@ -5,7 +5,7 @@
 
 
 use \Codeception\Maybe;
-use Codeception\Module\PhpBrowser;
+use Codeception\Module\Selenium2;
 use Codeception\Module\WebHelper;
 
 /**
@@ -24,51 +24,210 @@ class WebGuy extends \Codeception\AbstractGuy
 {
     
     /**
-     * Submits a form located on page.
-     * Specify the form by it's css or xpath selector.
-     * Fill the form fields values as array.
+     * Low-level API method.
+     * If Codeception commands are not enough, use Selenium WebDriver methods directly
      *
-     * Skipped fields will be filled by their values from page.
-     * You don't need to click the 'Submit' button afterwards.
-     * This command itself triggers the request to form's action.
+     * ``` php
+     * $I->executeInSelenium(function(\WebDriver\Session $webdriver) {
+     *   $webdriver->back();
+     * });
+     * ```
+     *
+     * Use [WebDriver Session API](https://github.com/facebook/php-webdriver)
+     * Not recommended this command too be used on regular basis.
+     * If Codeception lacks important Selenium methods implement then and submit patches.
+     *
+     * @param callable $function
+     * @see Selenium2::executeInSelenium()
+     * @return \Codeception\Maybe
+     * ! This method is generated. DO NOT EDIT. !
+     * ! Documentation taken from corresponding module !
+     */
+    public function executeInSelenium($function) {
+        $this->scenario->action('executeInSelenium', func_get_args());
+        if ($this->scenario->running()) {
+            $result = $this->scenario->runStep();
+            return new Maybe($result);
+        }
+        return new Maybe();
+    }
+
+ 
+    /**
+     * Perform a click on link or button.
+     * Link or button are found by their names or CSS selector.
+     * Submits a form if button is a submit type.
+     *
+     * If link is an image it's found by alt attribute value of image.
+     * If button is image button is found by it's value
+     * If link or button can't be found by name they are searched by CSS selector.
+     *
+     * The second parameter is a context: CSS or XPath locator to narrow the search.
      *
      * Examples:
      *
      * ``` php
      * <?php
-     * $I->submitForm('#login', array('login' => 'davert', 'password' => '123456'));
+     * // simple link
+     * $I->click('Logout');
+     * // button of form
+     * $I->click('Submit');
+     * // CSS button
+     * $I->click('#form input[type=submit]');
+     * // XPath
+     * $I->click('//form/*[@type=submit]')
+     * // link in context
+     * $I->click('Logout', '#nav');
+     * ?>
+     * ```
+     * @param $link
+     * @param $context
+     * @see Selenium2::click()
+     * @return \Codeception\Maybe
+     * ! This method is generated. DO NOT EDIT. !
+     * ! Documentation taken from corresponding module !
+     */
+    public function click($link, $context = null, $strict = null) {
+        $this->scenario->action('click', func_get_args());
+        if ($this->scenario->running()) {
+            $result = $this->scenario->runStep();
+            return new Maybe($result);
+        }
+        return new Maybe();
+    }
+
+ 
+    /**
+     * Accept alert or confirm popup
+     *
+     * Example:
+     * ``` php
+     * <?php
+     * $I->click('Show alert popup');
+     * $I->acceptPopup();
+     *
+     * ```
+     * @see Selenium2::acceptPopup()
+     * @return \Codeception\Maybe
+     * ! This method is generated. DO NOT EDIT. !
+     * ! Documentation taken from corresponding module !
+     */
+    public function acceptPopup() {
+        $this->scenario->action('acceptPopup', func_get_args());
+        if ($this->scenario->running()) {
+            $result = $this->scenario->runStep();
+            return new Maybe($result);
+        }
+        return new Maybe();
+    }
+
+ 
+    /**
+     * Dismiss alert or confirm popup
+     *
+     * Example:
+     * ``` php
+     * <?php
+     * $I->click('Show confirm popup');
+     * $I->cancelPopup();
+     *
+     * ```
+     * @see Selenium2::cancelPopup()
+     * @return \Codeception\Maybe
+     * ! This method is generated. DO NOT EDIT. !
+     * ! Documentation taken from corresponding module !
+     */
+    public function cancelPopup() {
+        $this->scenario->action('cancelPopup', func_get_args());
+        if ($this->scenario->running()) {
+            $result = $this->scenario->runStep();
+            return new Maybe($result);
+        }
+        return new Maybe();
+    }
+
+ 
+    /**
+     * Checks if popup contains the $text
+     *
+     * Example:
+     * ``` php
+     * <?php
+     * $I->click('Show alert popup');
+     * $I->seeInPopup('Error message');
      *
      * ```
      *
-     * For sample Sign Up form:
+     * @param string $text
+     * @see Selenium2::seeInPopup()
+     * @return \Codeception\Maybe
+     * ! This method is generated. DO NOT EDIT. !
+     * ! Documentation taken from corresponding module !
+     */
+    public function seeInPopup($text) {
+        $this->scenario->assertion('seeInPopup', func_get_args());
+        if ($this->scenario->running()) {
+            $result = $this->scenario->runStep();
+            return new Maybe($result);
+        }
+        return new Maybe();
+    }
+
+ 
+    /**
+     * Check if popup don't contains the $text
      *
+     * Example:
+     * ``` php
+     * <?php
+     * $I->click();
+     * $I->dontSeeInPopup('Error message');
+     *
+     * ```
+     *
+     * @param string $text
+     * @see Selenium2::dontSeeInPopup()
+     * @return \Codeception\Maybe
+     * ! This method is generated. DO NOT EDIT. !
+     * ! Documentation taken from corresponding module !
+     */
+    public function dontSeeInPopup($text) {
+        $this->scenario->action('dontSeeInPopup', func_get_args());
+        if ($this->scenario->running()) {
+            $result = $this->scenario->runStep();
+            return new Maybe($result);
+        }
+        return new Maybe();
+    }
+
+ 
+    /**
+     * Switch to another window
+     *
+     * Example:
      * ``` html
-     * <form action="/sign_up">
-     *     Login: <input type="text" name="user[login]" /><br/>
-     *     Password: <input type="password" name="user[password]" /><br/>
-     *     Do you agree to out terms? <input type="checkbox" name="user[agree]" /><br/>
-     *     Select pricing plan <select name="plan"><option value="1">Free</option><option value="2" selected="selected">Paid</option></select>
-     *     <input type="submit" value="Submit" />
-     * </form>
+     * <input type="button" value="Open window" onclick="window.open('http://example.com', 'another_window')">
+     *
      * ```
-     * I can write this:
      *
      * ``` php
      * <?php
-     * $I->submitForm('#userForm', array('user' => array('login' => 'Davert', 'password' => '123456', 'agree' => true)));
+     * $I->click("Open window");
+     * # switch to another window
+     * $I->switchToWindow("another_window");
+     * # switch to parent window
+     * $I->switchToWindow();
      *
      * ```
-     * Note, that pricing plan will be set to Paid, as it's selected on page.
      *
-     * @param $selector
-     * @param $params
-     * @see PhpBrowser::submitForm()
+     * @param string|null $name
+     * @see Selenium2::switchToWindow()
      * @return \Codeception\Maybe
      * ! This method is generated. DO NOT EDIT. !
      * ! Documentation taken from corresponding module !
      */
-    public function submitForm($selector, $params) {
-        $this->scenario->action('submitForm', func_get_args());
+    public function switchToWindow($name = null) {
+        $this->scenario->action('switchToWindow', func_get_args());
         if ($this->scenario->running()) {
             $result = $this->scenario->runStep();
             return new Maybe($result);
@@ -78,54 +237,31 @@ class WebGuy extends \Codeception\AbstractGuy
 
  
     /**
-     * If your page triggers an ajax request, you can perform it manually.
-     * This action sends a POST ajax request with specified params.
-     * Additional params can be passed as array.
+     * Switch to another frame
      *
      * Example:
-     *
-     * Imagine that by clicking checkbox you trigger ajax request which updates user settings.
-     * We emulate that click by running this ajax request manually.
-     *
-     * ``` php
-     * <?php
-     * $I->sendAjaxPostRequest('/updateSettings', array('notifications' => true); // POST
-     * $I->sendAjaxGetRequest('/updateSettings', array('notifications' => true); // GET
+     * ``` html
+     * <iframe name="another_frame" src="http://example.com">
      *
      * ```
      *
-     * @param $uri
-     * @param $params
-     * @see PhpBrowser::sendAjaxPostRequest()
-     * @return \Codeception\Maybe
-     * ! This method is generated. DO NOT EDIT. !
-     * ! Documentation taken from corresponding module !
-     */
-    public function sendAjaxPostRequest($uri, $params = null) {
-        $this->scenario->action('sendAjaxPostRequest', func_get_args());
-        if ($this->scenario->running()) {
-            $result = $this->scenario->runStep();
-            return new Maybe($result);
-        }
-        return new Maybe();
-    }
-
- 
-    /**
-     * If your page triggers an ajax request, you can perform it manually.
-     * This action sends a GET ajax request with specified params.
+     * ``` php
+     * <?php
+     * # switch to iframe
+     * $I->switchToIFrame("another_frame");
+     * # switch to parent page
+     * $I->switchToIFrame();
      *
-     * See ->sendAjaxPostRequest for examples.
+     * ```
      *
-     * @param $uri
-     * @param $params
-     * @see PhpBrowser::sendAjaxGetRequest()
+     * @param string|null $name
+     * @see Selenium2::switchToIFrame()
      * @return \Codeception\Maybe
      * ! This method is generated. DO NOT EDIT. !
      * ! Documentation taken from corresponding module !
      */
-    public function sendAjaxGetRequest($uri, $params = null) {
-        $this->scenario->action('sendAjaxGetRequest', func_get_args());
+    public function switchToIFrame($name = null) {
+        $this->scenario->action('switchToIFrame', func_get_args());
         if ($this->scenario->running()) {
             $result = $this->scenario->runStep();
             return new Maybe($result);
@@ -135,54 +271,25 @@ class WebGuy extends \Codeception\AbstractGuy
 
  
     /**
-     * Asserts that current page has 404 response status code.
-     * @see PhpBrowser::seePageNotFound()
-     * @return \Codeception\Maybe
-     * ! This method is generated. DO NOT EDIT. !
-     * ! Documentation taken from corresponding module !
-     */
-    public function seePageNotFound() {
-        $this->scenario->assertion('seePageNotFound', func_get_args());
-        if ($this->scenario->running()) {
-            $result = $this->scenario->runStep();
-            return new Maybe($result);
-        }
-        return new Maybe();
-    }
-
- 
-    /**
-     * Checks that response code is equal to value provided.
+     * Resize current window
      *
-     * @param $code
-     * @return mixed
-     * @see PhpBrowser::seeResponseCodeIs()
-     * @return \Codeception\Maybe
-     * ! This method is generated. DO NOT EDIT. !
-     * ! Documentation taken from corresponding module !
-     */
-    public function seeResponseCodeIs($code) {
-        $this->scenario->assertion('seeResponseCodeIs', func_get_args());
-        if ($this->scenario->running()) {
-            $result = $this->scenario->runStep();
-            return new Maybe($result);
-        }
-        return new Maybe();
-    }
-
- 
-    /**
-     * Adds HTTP authentication via username/password.
+     * Example:
+     * ``` php
+     * <?php
+     * $I->resizeWindow(800, 600);
      *
-     * @param $username
-     * @param $password
-     * @see PhpBrowser::amHttpAuthenticated()
+     * ```
+     *
+     * @param int    $width
+     * @param int    $height
+     * @author Jaik Dean <jaik@jaikdean.com>
+     * @see Selenium2::resizeWindow()
      * @return \Codeception\Maybe
      * ! This method is generated. DO NOT EDIT. !
      * ! Documentation taken from corresponding module !
      */
-    public function amHttpAuthenticated($username, $password) {
-        $this->scenario->condition('amHttpAuthenticated', func_get_args());
+    public function resizeWindow($width, $height) {
+        $this->scenario->action('resizeWindow', func_get_args());
         if ($this->scenario->running()) {
             $result = $this->scenario->runStep();
             return new Maybe($result);
@@ -192,37 +299,326 @@ class WebGuy extends \Codeception\AbstractGuy
 
  
     /**
-     * Low-level API method.
-     * If Codeception commands are not enough, use [Guzzle HTTP Client](http://guzzlephp.org/) methods directly
+     * Ticks a checkbox.
+     * For radio buttons use `selectOption` method.
      *
      * Example:
      *
      * ``` php
      * <?php
-     * // from the official Guzzle manual
-     * $I->amGoingTo('Sign all requests with OAuth');
-     * $I->executeInGuzzle(function (\Guzzle\Http\Client $client) {
-     *      $client->addSubscriber(new Guzzle\Plugin\Oauth\OauthPlugin(array(
-     *                  'consumer_key'    => '***',
-     *                  'consumer_secret' => '***',
-     *                  'token'           => '***',
-     *                  'token_secret'    => '***'
-     *      )));
-     * });
+     * $I->checkOption('#agree');
      * ?>
      * ```
      *
-     * Not recommended this command too be used on regular basis.
-     * If Codeception lacks important Guzzle Client methods implement then and submit patches.
-     *
-     * @param callable $function
-     * @see PhpBrowser::executeInGuzzle()
+     * @param $option
+     * @see MinkJS::checkOption()
      * @return \Codeception\Maybe
      * ! This method is generated. DO NOT EDIT. !
      * ! Documentation taken from corresponding module !
      */
-    public function executeInGuzzle($function) {
-        $this->scenario->action('executeInGuzzle', func_get_args());
+    public function checkOption($option) {
+        $this->scenario->action('checkOption', func_get_args());
+        if ($this->scenario->running()) {
+            $result = $this->scenario->runStep();
+            return new Maybe($result);
+        }
+        return new Maybe();
+    }
+
+ 
+    /**
+     * Unticks a checkbox.
+     *
+     * Example:
+     *
+     * ``` php
+     * <?php
+     * $I->uncheckOption('#notify');
+     * ?>
+     * ```
+     *
+     * @param $option
+     * @see MinkJS::uncheckOption()
+     * @return \Codeception\Maybe
+     * ! This method is generated. DO NOT EDIT. !
+     * ! Documentation taken from corresponding module !
+     */
+    public function uncheckOption($option) {
+        $this->scenario->action('uncheckOption', func_get_args());
+        if ($this->scenario->running()) {
+            $result = $this->scenario->runStep();
+            return new Maybe($result);
+        }
+        return new Maybe();
+    }
+
+ 
+    /**
+     * Double clicks on link or button or any node found by CSS or XPath
+     *
+     * @param $link
+     * @see MinkJS::doubleClick()
+     * @return \Codeception\Maybe
+     * ! This method is generated. DO NOT EDIT. !
+     * ! Documentation taken from corresponding module !
+     */
+    public function doubleClick($link) {
+        $this->scenario->action('doubleClick', func_get_args());
+        if ($this->scenario->running()) {
+            $result = $this->scenario->runStep();
+            return new Maybe($result);
+        }
+        return new Maybe();
+    }
+
+ 
+    /**
+     * Clicks with right button on link or button or any node found by CSS or XPath
+     *
+     * @param $link
+     * @see MinkJS::clickWithRightButton()
+     * @return \Codeception\Maybe
+     * ! This method is generated. DO NOT EDIT. !
+     * ! Documentation taken from corresponding module !
+     */
+    public function clickWithRightButton($link) {
+        $this->scenario->action('clickWithRightButton', func_get_args());
+        if ($this->scenario->running()) {
+            $result = $this->scenario->runStep();
+            return new Maybe($result);
+        }
+        return new Maybe();
+    }
+
+ 
+    /**
+     * Moves mouse over link or button or any node found by CSS or XPath
+     *
+     * @param $link
+     * @see MinkJS::moveMouseOver()
+     * @return \Codeception\Maybe
+     * ! This method is generated. DO NOT EDIT. !
+     * ! Documentation taken from corresponding module !
+     */
+    public function moveMouseOver($link) {
+        $this->scenario->action('moveMouseOver', func_get_args());
+        if ($this->scenario->running()) {
+            $result = $this->scenario->runStep();
+            return new Maybe($result);
+        }
+        return new Maybe();
+    }
+
+ 
+    /**
+     * Moves focus to link or button or any node found by CSS or XPath
+     *
+     * @param $el
+     * @see MinkJS::focus()
+     * @return \Codeception\Maybe
+     * ! This method is generated. DO NOT EDIT. !
+     * ! Documentation taken from corresponding module !
+     */
+    public function focus($el) {
+        $this->scenario->action('focus', func_get_args());
+        if ($this->scenario->running()) {
+            $result = $this->scenario->runStep();
+            return new Maybe($result);
+        }
+        return new Maybe();
+    }
+
+ 
+    /**
+     * Removes focus from link or button or any node found by CSS or XPath
+     * XPath or CSS selectors are accepted.
+     *
+     * @param $el
+     * @see MinkJS::blur()
+     * @return \Codeception\Maybe
+     * ! This method is generated. DO NOT EDIT. !
+     * ! Documentation taken from corresponding module !
+     */
+    public function blur($el) {
+        $this->scenario->action('blur', func_get_args());
+        if ($this->scenario->running()) {
+            $result = $this->scenario->runStep();
+            return new Maybe($result);
+        }
+        return new Maybe();
+    }
+
+ 
+    /**
+     * Drag first element to second
+     * XPath or CSS selectors are accepted.
+     *
+     * @param $el1
+     * @param $el2
+     * @see MinkJS::dragAndDrop()
+     * @return \Codeception\Maybe
+     * ! This method is generated. DO NOT EDIT. !
+     * ! Documentation taken from corresponding module !
+     */
+    public function dragAndDrop($el1, $el2) {
+        $this->scenario->action('dragAndDrop', func_get_args());
+        if ($this->scenario->running()) {
+            $result = $this->scenario->runStep();
+            return new Maybe($result);
+        }
+        return new Maybe();
+    }
+
+ 
+    /**
+     * Checks element visibility.
+     * Fails if element exists but is invisible to user.
+     * Eiter CSS or XPath can be used.
+     *
+     * @param $selector
+     * @see MinkJS::seeElement()
+     * @return \Codeception\Maybe
+     * ! This method is generated. DO NOT EDIT. !
+     * ! Documentation taken from corresponding module !
+     */
+    public function seeElement($selector) {
+        $this->scenario->assertion('seeElement', func_get_args());
+        if ($this->scenario->running()) {
+            $result = $this->scenario->runStep();
+            return new Maybe($result);
+        }
+        return new Maybe();
+    }
+
+ 
+    /**
+     * Presses key on element found by css, xpath is focused
+     * A char and modifier (ctrl, alt, shift, meta) can be provided.
+     *
+     * Example:
+     *
+     * ``` php
+     * <?php
+     * $I->pressKey('#page','u');
+     * $I->pressKey('#page','u','ctrl');
+     * $I->pressKey('descendant-or-self::*[@id='page']','u');
+     * ?>
+     * ```
+     *
+     * @param $element
+     * @param $char char can be either char ('b') or char-code (98)
+     * @param null $modifier keyboard modifier (could be 'ctrl', 'alt', 'shift' or 'meta')
+     * @see MinkJS::pressKey()
+     * @return \Codeception\Maybe
+     * ! This method is generated. DO NOT EDIT. !
+     * ! Documentation taken from corresponding module !
+     */
+    public function pressKey($element, $char, $modifier = null) {
+        $this->scenario->action('pressKey', func_get_args());
+        if ($this->scenario->running()) {
+            $result = $this->scenario->runStep();
+            return new Maybe($result);
+        }
+        return new Maybe();
+    }
+
+ 
+    /**
+     * Presses key up on element found by CSS or XPath.
+     *
+     * For example see 'pressKey'.
+     *
+     * @param $element
+     * @param $char char can be either char ('b') or char-code (98)
+     * @param null $modifier keyboard modifier (could be 'ctrl', 'alt', 'shift' or 'meta')
+     * @see MinkJS::pressKeyUp()
+     * @return \Codeception\Maybe
+     * ! This method is generated. DO NOT EDIT. !
+     * ! Documentation taken from corresponding module !
+     */
+    public function pressKeyUp($element, $char, $modifier = null) {
+        $this->scenario->action('pressKeyUp', func_get_args());
+        if ($this->scenario->running()) {
+            $result = $this->scenario->runStep();
+            return new Maybe($result);
+        }
+        return new Maybe();
+    }
+
+ 
+    /**
+     * Presses key down on element found by CSS or XPath.
+     *
+     * For example see 'pressKey'.
+     *
+     * @param $element
+     * @param $char char can be either char ('b') or char-code (98)
+     * @param null $modifier keyboard modifier (could be 'ctrl', 'alt', 'shift' or 'meta')
+     * @see MinkJS::pressKeyDown()
+     * @return \Codeception\Maybe
+     * ! This method is generated. DO NOT EDIT. !
+     * ! Documentation taken from corresponding module !
+     */
+    public function pressKeyDown($element, $char, $modifier = null) {
+        $this->scenario->action('pressKeyDown', func_get_args());
+        if ($this->scenario->running()) {
+            $result = $this->scenario->runStep();
+            return new Maybe($result);
+        }
+        return new Maybe();
+    }
+
+ 
+    /**
+     * Wait for x milliseconds
+     *
+     * @param $milliseconds
+     * @see MinkJS::wait()
+     * @return \Codeception\Maybe
+     * ! This method is generated. DO NOT EDIT. !
+     * ! Documentation taken from corresponding module !
+     */
+    public function wait($milliseconds) {
+        $this->scenario->action('wait', func_get_args());
+        if ($this->scenario->running()) {
+            $result = $this->scenario->runStep();
+            return new Maybe($result);
+        }
+        return new Maybe();
+    }
+
+ 
+    /**
+     * Waits for x milliseconds or until JS condition turns true.
+     *
+     * @param $milliseconds
+     * @param $jsCondition
+     * @see MinkJS::waitForJS()
+     * @return \Codeception\Maybe
+     * ! This method is generated. DO NOT EDIT. !
+     * ! Documentation taken from corresponding module !
+     */
+    public function waitForJS($milliseconds, $jsCondition) {
+        $this->scenario->action('waitForJS', func_get_args());
+        if ($this->scenario->running()) {
+            $result = $this->scenario->runStep();
+            return new Maybe($result);
+        }
+        return new Maybe();
+    }
+
+ 
+    /**
+     * Executes any JS code.
+     *
+     * @param $jsCode
+     * @see MinkJS::executeJs()
+     * @return \Codeception\Maybe
+     * ! This method is generated. DO NOT EDIT. !
+     * ! Documentation taken from corresponding module !
+     */
+    public function executeJs($jsCode) {
+        $this->scenario->action('executeJs', func_get_args());
         if ($this->scenario->running()) {
             $result = $this->scenario->runStep();
             return new Maybe($result);
@@ -403,75 +799,6 @@ class WebGuy extends \Codeception\AbstractGuy
 
  
     /**
-     * Perform a click on link or button.
-     * Link or button are found by their names or CSS selector.
-     * Submits a form if button is a submit type.
-     *
-     * If link is an image it's found by alt attribute value of image.
-     * If button is image button is found by it's value
-     * If link or button can't be found by name they are searched by CSS selector.
-     *
-     * The second parameter is a context: CSS or XPath locator to narrow the search.
-     *
-     * Examples:
-     *
-     * ``` php
-     * <?php
-     * // simple link
-     * $I->click('Logout');
-     * // button of form
-     * $I->click('Submit');
-     * // CSS button
-     * $I->click('#form input[type=submit]');
-     * // XPath
-     * $I->click('//form/*[@type=submit]')
-     * // link in context
-     * $I->click('Logout', '#nav');
-     * ?>
-     * ```
-     * @param $link
-     * @param $context
-     * @see Mink::click()
-     * @return \Codeception\Maybe
-     * ! This method is generated. DO NOT EDIT. !
-     * ! Documentation taken from corresponding module !
-     */
-    public function click($link, $context = null) {
-        $this->scenario->action('click', func_get_args());
-        if ($this->scenario->running()) {
-            $result = $this->scenario->runStep();
-            return new Maybe($result);
-        }
-        return new Maybe();
-    }
-
- 
-    /**
-     * Checks if element exists on a page, matching it by CSS or XPath
-     *
-     * ``` php
-     * <?php
-     * $I->seeElement('.error');
-     * $I->seeElement(//form/input[1]);
-     * ?>
-     * ```
-     * @param $selector
-     * @see Mink::seeElement()
-     * @return \Codeception\Maybe
-     * ! This method is generated. DO NOT EDIT. !
-     * ! Documentation taken from corresponding module !
-     */
-    public function seeElement($selector) {
-        $this->scenario->assertion('seeElement', func_get_args());
-        if ($this->scenario->running()) {
-            $result = $this->scenario->runStep();
-            return new Maybe($result);
-        }
-        return new Maybe();
-    }
-
- 
-    /**
      * Checks if element does not exist (or is visible) on a page, matching it by CSS or XPath
      *
      * ``` php
@@ -589,61 +916,6 @@ class WebGuy extends \Codeception\AbstractGuy
      */
     public function selectOption($select, $option) {
         $this->scenario->action('selectOption', func_get_args());
-        if ($this->scenario->running()) {
-            $result = $this->scenario->runStep();
-            return new Maybe($result);
-        }
-        return new Maybe();
-    }
-
- 
-    /**
-     * Ticks a checkbox.
-     * For radio buttons use `selectOption` method.
-     *
-     * Example:
-     *
-     * ``` php
-     * <?php
-     * $I->checkOption('#agree');
-     * ?>
-     * ```
-     *
-     * @param $option
-     * @see Mink::checkOption()
-     * @return \Codeception\Maybe
-     * ! This method is generated. DO NOT EDIT. !
-     * ! Documentation taken from corresponding module !
-     */
-    public function checkOption($option) {
-        $this->scenario->action('checkOption', func_get_args());
-        if ($this->scenario->running()) {
-            $result = $this->scenario->runStep();
-            return new Maybe($result);
-        }
-        return new Maybe();
-    }
-
- 
-    /**
-     * Unticks a checkbox.
-     *
-     * Example:
-     *
-     * ``` php
-     * <?php
-     * $I->uncheckOption('#notify');
-     * ?>
-     * ```
-     *
-     * @param $option
-     * @see Mink::uncheckOption()
-     * @return \Codeception\Maybe
-     * ! This method is generated. DO NOT EDIT. !
-     * ! Documentation taken from corresponding module !
-     */
-    public function uncheckOption($option) {
-        $this->scenario->action('uncheckOption', func_get_args());
         if ($this->scenario->running()) {
             $result = $this->scenario->runStep();
             return new Maybe($result);

@@ -9,7 +9,7 @@
     {% endstylesheets %}
 {% endblock %}
 {% block body %}
-    <div id="wrapper">
+    <div id="wrapper" data-controller="notifications">
         <div class="container header">
             <div class="row">
                 <div class="span12">
@@ -23,93 +23,56 @@
             </div>
         </div>
         <div class="container content" data-controller="project">
-            <div class="row todo">
-                <div class="span12 project_title">
-                    <div class="row">
-                        <div class="span1 project_icon">
-                            <div class="icon-white icon-calendar icon-with-margin">&nbsp;</div>
-                        </div>
-                        <div class="span9 project_name">
-                            Some sample project
-                        </div>
-                        <div class="span2 actions">
-                            <div class="btn-toolbar">
-                                <div class="btn-group-primary">
-                                    <a class="btn" href="#"><i class="icon-edit"></i></a>
-                                    <a class="btn" href="#"><i class="icon-remove"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="span12 add_task">
-                    <div class="row">
-                        <div class="span1">
-                            <i class="icon-plus icon-with-margin"></i>
-                        </div>
-                        <div class="span11">
-                            <form>
-                                <div class="input-append">
-                                    <input class="span9" placeholder="Start typing here to create a task" type="text">
-                                    <button class="btn btn-success" type="button">Add new task</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="span12 list_of_tasks">
-                    <ul class="list">
-                        <li class="task">
-                            <div class="row">
-                                <div class="span1 done">
-                                    <input type="checkbox"/>
-                                </div>
-                                <div class="span9 name">
-                                    Some sample task
-                                </div>
-                                <div class="span2 actions">
-                                    <div class="btn-toolbar">
-                                        <div class="btn-group-primary">
-                                            <a class="btn" href="#"><i class="icon-move"></i></a>
-                                            <a class="btn" href="#"><i class="icon-edit"></i></a>
-                                            <a class="btn" href="#"><i class="icon-remove"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="task">
-                            <div class="row">
-                                <div class="span1 done">
-                                    <input type="checkbox"/>
-                                </div>
-                                <div class="span9 name">
-                                    Some sample task
-                                </div>
-                                <div class="span2 actions">
-                                    <div class="btn-toolbar">
-                                        <div class="btn-group-primary">
-                                            <a class="btn" href="#"><i class="icon-move"></i></a>
-                                            <a class="btn" href="#"><i class="icon-edit"></i></a>
-                                            <a class="btn" href="#"><i class="icon-remove"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
         </div>
         <div class="container footer">
             <div class="row">
                 <div class="span2 offset5">
-                    <button class="btn btn-primary"><i class="icon icon-plus"></i> Add TODO list</button>
+                    <button type="button" data-toggle="modal" class="btn btn-primary add_project"
+                            data-target="#myModal"><i class="icon icon-plus"></i> Add TODO list
+                    </button>
                 </div>
             </div>
         </div>
     </div>
+    <div id="modal_wrapper" data-controller="windows">
+        <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel"></h3>
+            </div>
+            <div class="modal-body">
+                    {% include '::client/project_form.html.twig' %}
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+            </div>
+        </div>
+    </div>
 {% endblock %}
+
 {% block javascripts %}
-<script src="/assets/js/steal/steal.js?rubygarage"></script>
+
+    <script src="/assets/js/steal/steal.js"></script>
+    <script>
+        var templates = [];
+        {% javascripts
+        "%kernel.root_dir%/Resources/views/client/project.html.twig"
+        filter="twig_js, ?yui_js" %}
+        //create a list of templates which should be loaded on client
+        templates.push("{{ asset_url }}".replace(/\/app(.*?).php\//, ""));
+
+        {% endjavascripts %}
+        //caching rootUrl: we need to download files from different directory
+        var oldRoot = steal.rootUrl();
+
+        //after loading templates we can load application
+        steal('rubygarage').then(function () {
+            steal.rootUrl("{{ app.request.baseUrl }}");
+            steal.apply(null, templates);
+        });
+
+
+    </script>
 {% endblock %}
+

@@ -1,0 +1,11 @@
+<form class="form-inline">
+    <fieldset>
+        <label>Project name</label>
+        <input type="text" placeholder="Project name"
+               name="name" {% if project is defined and project.name is defined %}
+               value={{ project.name }}
+        {% endif %} required="required">
+
+        <button type="submit" class="btn btn-primary">Save</button>
+    </fieldset>
+</form>

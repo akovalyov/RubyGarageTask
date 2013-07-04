@@ -16,6 +16,6 @@ modules:
     config:
         Selenium2:
             browser: firefox
-            url: 'http://192.168.56.101'
+            url: 'http://192.168.56.101/app_dev.php'
             capabilities:
                 unexpectedAlertBehaviour: 'accept'

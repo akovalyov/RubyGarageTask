@@ -19,8 +19,9 @@ helpers
 .icon-with-margin {
     margin: 15px 0;
 }
-.icon-move{
-    cursor:move;
+
+.icon-move {
+    cursor: move;
 }
 
 /**
@@ -43,6 +44,10 @@ body {
 /**
 project list
 */
+.todo {
+    padding-bottom: 15px;
+}
+
 .project_title {
     color: #ffffff;
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
@@ -107,31 +112,35 @@ project list
     list-style-type: none;
     margin: 0;
     padding: 0;
-    width:940px;
+    width: 940px;
 }
 
 .task {
     border: 1px solid #e7ebea;
-    border-top:none;
-    width:938px;
+    border-top: none;
+    width: 938px;
 }
-.task:nth-child(even){
-    background-color:#eee;
+
+.task:nth-child(even) {
+    background-color: #eee;
 }
-.task:hover{
+
+.task:hover {
     background-color: #fcfed5;
     cursor: pointer;
 
 }
+
 /*.task .done, .task .name {*/
-    /*height: 45px;*/
+/*height: 45px;*/
 /*}*/
-.task .done{
-    padding:15px 0 0 25px;
-    width:50px !important;
+.task .done {
+    padding: 15px 0 0 25px;
+    width: 50px !important;
 }
-.task .name{
-    width:680px !important;
+
+.task .name {
+    width: 680px !important;
     padding: 15px 0 15px 0 !important;
 
 }
