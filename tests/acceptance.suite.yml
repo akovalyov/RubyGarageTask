@@ -15,6 +15,7 @@ modules:
         - WebHelper
     config:
         Selenium2:
-            url: 'http://192.168.56.101/'
+            browser: firefox
+            url: 'http://192.168.56.101'
             capabilities:
                 unexpectedAlertBehaviour: 'accept'
