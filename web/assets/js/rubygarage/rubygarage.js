@@ -42,12 +42,14 @@ steal(
                  * @param item
                  */
                 '{Project} created': function (list, ev, item) {
-                    //let's add this project to our stack
-                    this.options.projects.push(item);
-                    //display the project
-                    this._setProjectView(item);
-                    //and say to worried user to be relaxed - everything is OK
+                    // say to worried user to be relaxed - everything is OK
+
                     this.publish('notification.push', {level: 'success', 'message': 'Project was successfully created'});
+                    //reload all projects
+
+                    Project.findAll({}, function (projects) {
+                        $('[data-controller=project]').project('destroy').html('').project({projects: projects})
+                    });
                 },
                 /**
                  *
@@ -66,6 +68,19 @@ steal(
                     $('[data-project-id=' + project_id + '] .project_name').html(Twig.render(project_form_twig, {
                         project: project
                     }));
+                },
+                '.project_title .project_delete click': function (el, ev) {
+                    var that = this;
+                    var project_id = el.parents("[data-project-id]").attr('data-project-id');
+                    var project = Project.destroy(project_id);
+                    project.then(function () {
+                        that.publish('notification.push', {level: 'success', 'message': 'Project was successfully deleted'});
+
+                        $('[data-project-id=' + project_id + ']').fadeOut(function () {
+                            $(this).remove();
+                        })
+                    })
+
                 },
                 '.project_title form submit': function (el, ev) {
                     ev.preventDefault();
@@ -88,7 +103,6 @@ steal(
                                 that.options.projects[project_index] = project;
                                 //update view
                                 that._setProjectView(project);
-                                console.log(that.options.projects)
 
                                 //and say to worried user to be relaxed - everything is OK
                                 that.publish('notification.push', {level: 'success', 'message': 'Project was successfully updated'});
@@ -105,8 +119,7 @@ steal(
                     ev.preventDefault();
                     var project = new Project({name: el.find('[name = name]').val()});
                     project.save(function () {
-                        //push new project to controller to allow it to add the project to the DOM
-                        $('[data-controller=project]').project(project);
+
                         //close modal window
                         $('[data-dismiss=modal]').trigger('click');
 
@@ -159,7 +172,10 @@ steal(
                         dataType: "json",
                         type: "post",
                         fixture: function () {
+                            console.log(arguments)
+                            params.id = parseInt(Math.random() * 10000);
                             Project.fakeData.push(params);
+
 
                         },
                         success: success
@@ -185,7 +201,21 @@ steal(
                         success: success
                     })
                 },
-                destroy: 'DELETE /projects/{id}.json'
+                destroy: function (id, success, error) {
+                    return $.ajax({
+                        url: "/projects/" + id + ".json",
+                        dataType: "json",
+                        type: "delete",
+                        fixture: function () {
+                            Project.fakeData = jQuery.grep(Project.fakeData, function(value) {
+                                return value.id != id;
+                            });
+
+
+                        },
+                        success: success
+                    })
+                }
             }, {});
 //initializing controllers
             steal.dev.log('initializing application')
