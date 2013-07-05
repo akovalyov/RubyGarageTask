@@ -120,7 +120,11 @@ project list
     border-top: none;
     width: 938px;
 }
-
+.no_tasks{
+    padding:5px 0;
+    text-align: center;
+    color:#999999;
+}
 .task:nth-child(even) {
     background-color: #eee;
 }

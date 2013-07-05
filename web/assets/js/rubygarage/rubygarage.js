@@ -10,13 +10,20 @@ steal(
         steal.bind('ready', function () {
             //declaring controllers
             $.Controller('ProjectController', {}, {
+                /**
+                 * initialize
+                 */
                 init: function () {
                     var that = this;
-                    console.log(this.options.projects)
                     $.each(this.options.projects, function (i, project) {
                         that._setProjectView(project);
                     });
                 },
+                /**
+                 * helper function for adding or updating set of DOM elements which represent project
+                 * @param project
+                 * @private
+                 */
                 _setProjectView: function (project) {
                     if ($('[data-project-id=' + project.id + ']').length === 0) {
                         this.element.append(Twig.render(project_twig, {
@@ -25,10 +32,15 @@ steal(
                         }));
                     }
                     else {
-                        //@todo replace element;
+                        $('[data-project-id=' + project.id + ']').replaceWith(Twig.render(project_twig, {project: project}));
                     }
                 },
-                //binding on project creation
+                /**
+                 * updates local stack of projects, calls the DOM update function and publishes a message
+                 * @param list
+                 * @param ev
+                 * @param item
+                 */
                 '{Project} created': function (list, ev, item) {
                     //let's add this project to our stack
                     this.options.projects.push(item);
@@ -37,8 +49,12 @@ steal(
                     //and say to worried user to be relaxed - everything is OK
                     this.publish('notification.push', {level: 'success', 'message': 'Project was successfully created'});
                 },
-                //replace title with form
-                '.project_title .icon-edit click': function (el, ev) {
+                /**
+                 *
+                 * @param el
+                 * @param ev
+                 */
+                '.project_title .project_edit click': function (el, ev) {
                     //cache project id to prevent parsing of DOM
                     var project_id = el.parents("[data-project-id]").attr('data-project-id');
                     //find needed project
@@ -53,12 +69,30 @@ steal(
                 },
                 '.project_title form submit': function (el, ev) {
                     ev.preventDefault();
+                    var that = this;
                     new Project({
                         name: el.find('[name=name]').val(),
                         id: el.parents("[data-project-id]").attr('data-project-id')
-                    }).save(function(){
-                            //@todo edit callback
-                            console.log('saved');
+                    }).save(function (project) {
+                            var project_index;
+                            $.each(that.options.projects, function (i, p) {
+
+                                if (p.id == project.id) {
+                                    project_index = i;
+                                }
+                            });
+                            //get project with tasks
+                            var updated_project = Project.findOne(project.id);
+                            updated_project.then(function (project) {
+                                //update local stack
+                                that.options.projects[project_index] = project;
+                                //update view
+                                that._setProjectView(project);
+                                console.log(that.options.projects)
+
+                                //and say to worried user to be relaxed - everything is OK
+                                that.publish('notification.push', {level: 'success', 'message': 'Project was successfully updated'});
+                            });
                         });
                 }
             })
@@ -119,8 +153,38 @@ steal(
                         success: success
                     })
                 },
-                create: 'POST /projects.json',
-                update: 'PUT /projects/{id}.json',
+                create: function (params, success, error) {
+                    return $.ajax({
+                        url: "/projects.json",
+                        dataType: "json",
+                        type: "post",
+                        fixture: function () {
+                            Project.fakeData.push(params);
+
+                        },
+                        success: success
+                    })
+                },
+                update: function (id, params, success, error) {
+                    return $.ajax({
+                        url: "/projects/" + id + ".json",
+                        dataType: "json",
+                        type: "put",
+                        fixture: function () {
+                            var project_index;
+                            $.each(Project.fakeData, function (i, p) {
+
+                                if (p.id == id) {
+                                    project_index = i;
+                                }
+                            });
+                            Project.fakeData[project_index] = params;
+                            return [Project.fakeData[project_index]];
+
+                        },
+                        success: success
+                    })
+                },
                 destroy: 'DELETE /projects/{id}.json'
             }, {});
 //initializing controllers
