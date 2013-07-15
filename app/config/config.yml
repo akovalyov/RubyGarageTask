@@ -4,7 +4,7 @@ imports:
 
 framework:
     #esi:             ~
-    #translator:      { fallback: %locale% }
+    translator:      { fallback: %locale% }
     secret:          %secret%
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -63,3 +63,15 @@ swiftmailer:
     username:  %mailer_user%
     password:  %mailer_password%
     spool:     { type: memory }
+
+
+
+#configuration for third-party components
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: RubyGarage\Bundle\UserBundle\Entity\User
+
+nelmio_api_doc: ~
+fos_rest:
+    param_fetcher_listener: true

@@ -31,10 +31,12 @@ steal('jquery/model').then(function ($) {
             })
         },
         create: function (params, success, error) {
+
             return $.ajax({
                 url: "/projects.json",
                 dataType: "json",
                 type: "post",
+                data: params,
                 fixture: function () {
                     console.log(arguments)
                     params.id = parseInt(Math.random() * 10000);
@@ -46,10 +48,14 @@ steal('jquery/model').then(function ($) {
             })
         },
         update: function (id, params, success, error) {
+            if(params.id){
+                delete params.id
+            }
             return $.ajax({
                 url: "/projects/" + id + ".json",
                 dataType: "json",
                 type: "put",
+                data: params,
                 fixture: function () {
                     var project_index;
                     $.each(Project.fakeData, function (i, p) {

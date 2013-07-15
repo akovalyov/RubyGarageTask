@@ -1,0 +1,44 @@
+{% trans_default_domain 'FOSUserBundle' %}
+<div class="container login_form">
+    <div class="row">
+        <div style="text-align:center; margin: 0 auto;" class="span12">
+            <div style="width: 423px; margin: 0 auto;" class="well">
+                <form method="post" action="{{ path("fos_user_security_check") }}" class="form-horizontal">
+                    <fieldset>
+                        <legend>Please login</legend>
+                        {#<input type="hidden" name="_csrf_token" value="{{ csrf_token }}"/>#}
+
+                        <div class="control-group">
+                            <label class="control-label"
+                                   for="username">{{ 'security.login.username'|trans }}</label>
+
+                            <div class="controls">
+                                <input type="text" id="username" placeholder="Username" name="_username"
+                                       value="{{ last_username }}"
+                                       required="required"/>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label"
+                                   for="password">{{ 'security.login.password'|trans }}</label>
+
+                            <div class="controls">
+                                <input type="password" id="password" placeholder="Password" name="_password"
+                                       required="required"/>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="controls">
+                                <label class="checkbox">
+                                    <input type="checkbox" id="remember_me" name="_remember_me" value="on"/>
+                                    {{ 'security.login.remember_me'|trans }}                </label>
+                                <input class="btn btn-primary" type="submit" id="_submit" name="_submit"
+                                       value="{{ 'security.login.submit'|trans }}"/>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

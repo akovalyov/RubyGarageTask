@@ -37,8 +37,10 @@ php5-curl
 php5-gd
 php5-sqlite
 php5-mysql
+mysql-server
 php5-intl
 php-apc
+
 ).each { | pkg | package pkg }
 
 template "/etc/apache2/sites-enabled/vhost.conf" do
@@ -84,6 +86,9 @@ bash "Running composer install and preparing the vendors repository" do
   code <<-EOH
     set -e
     curl -s https://getcomposer.org/installer | php
-    COMPOSER_VENDOR_DIR="/var/tmp/vendor" php composer.phar install --dev --prefer-dist --no-scripts
+    COMPOSER_VENDOR_DIR="/var/tmp/vendor" php composer.phar install --dev --prefer-dist
+    php app/console doctrine:database:create
+    php app/console doctrine:schema:create
+    php app/console fos:user:create username test@example.com securepassword
   EOH
 end

@@ -24,7 +24,11 @@
         "codeception/codeception": "@stable",
         "claylo/selenium-server-standalone": "dev-master",
         "jms/twig-js": "dev-master",
-        "jms/twig-js-bundle": "dev-master"
+        "jms/twig-js-bundle": "dev-master",
+	    "friendsofsymfony/rest-bundle": "0.13.*@dev",
+    	"friendsofsymfony/user-bundle": "2.0.*@dev",
+    	"nelmio/api-doc-bundle": "2.3.*@dev",
+        "jms/serializer-bundle": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [
@@ -49,7 +53,6 @@
     "extra": {
         "symfony-app-dir": "app",
         "symfony-web-dir": "web",
-        "symfony-assets-install": "symlink",
         "incenteev-parameters": {
             "file": "app/config/parameters.yml"
         }

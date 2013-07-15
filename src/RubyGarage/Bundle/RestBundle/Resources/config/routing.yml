@@ -1,0 +1,8 @@
+projects:
+    type:     rest
+    resource: RubyGarage\Bundle\RestBundle\Controller\ProjectsController
+
+#tasks:
+#    type:     rest
+#    parent:   projects
+#    resource: RubyGarage\RestBundle\Controller\CommentsController

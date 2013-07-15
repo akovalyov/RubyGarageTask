@@ -7,8 +7,41 @@
     output='assets/css/prod/index.css' %}
     <link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen"/>
     {% endstylesheets %}
+    \
+    {% javascripts
+    "assets/js/spin/spin.js"
+    filter="?yui_js" %}
+    <script src="{{ asset_url }}"></script>
+    <script>
+        window.onload = function () {
+            var spinnerConfig = {
+                lines: 13, // The number of lines to draw
+                length: 20, // The length of each line
+                width: 10, // The line thickness
+                radius: 30, // The radius of the inner circle
+                corners: 1, // Corner roundness (0..1)
+                rotate: 0, // The rotation offset
+                direction: 1, // 1: clockwise, -1: counterclockwise
+                color: '#fff', // #rgb or #rrggbb
+                speed: 1, // Rounds per second
+                trail: 60, // Afterglow percentage
+                shadow: false, // Whether to render a shadow
+                hwaccel: false, // Whether to use hardware acceleration
+                className: 'spinner', // The CSS class to assign to the spinner
+                zIndex: 2e9, // The z-index (defaults to 2000000000)
+                top: 'auto', // Top position relative to parent in px
+                left: 'auto' // Left position relative to parent in px
+            };
+
+            var target = document.getElementById('activity');
+            var spinner = new Spinner(spinnerConfig).spin(target);
+        }
+        // })();
+    </script>
+    {% endjavascripts %}
 {% endblock %}
 {% block body %}
+    <div id="activity" class="show" data-controller="activity"></div>
     <div id="wrapper" data-controller="notifications">
         <div class="container header">
             <div class="row">
@@ -22,9 +55,10 @@
                 </div>
             </div>
         </div>
-        <div class="container content" data-controller="project">
+        <div class="container content" data-controller="project"
+             {% if not is_granted('IS_AUTHENTICATED_FULLY') %}style="display: none;"{% endif %}>
         </div>
-        <div class="container footer">
+        <div class="container footer" {% if not is_granted('IS_AUTHENTICATED_FULLY') %}style="display: none;"{% endif %}>
             <div class="row">
                 <div class="span2 offset5">
                     <button type="button" data-toggle="modal" class="btn btn-primary add_project"
@@ -33,6 +67,10 @@
                 </div>
             </div>
         </div>
+
+        {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+            {% render(controller('FOSUserBundle:Security:login')) %}
+        {% endif %}
     </div>
     <div id="modal_wrapper" data-controller="windows">
         <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -42,7 +80,7 @@
                 <h3 id="myModalLabel"></h3>
             </div>
             <div class="modal-body">
-                    {% include '::client/project_form.html.twig' %}
+                {% include '::client/project_form.html.twig' %}
             </div>
             <div class="modal-footer">
                 <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>

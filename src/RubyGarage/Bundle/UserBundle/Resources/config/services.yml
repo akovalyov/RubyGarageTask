@@ -1,0 +1,9 @@
+parameters:
+    rubygarage_security.authentication_handler: RubyGarage\Bundle\UserBundle\Handler\AuthenticationHandler
+
+services:
+    authentication_handler:
+        class:  %rubygarage_security.authentication_handler%
+        arguments:  [@router]
+        tags:
+            - { name: 'monolog.logger', channel: 'security' }
