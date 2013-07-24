@@ -1,7 +1,7 @@
 steal(
     'jquery/controller',
     'jquery/model',
-  //  'jquery/dom/fixture',
+    'jquery/dom/fixture',
     'jquery/view/twig',
     'jquery/controller/subscribe',
     'bootstrap',
@@ -12,7 +12,8 @@ steal(
     './controllers/activity.js',
     './controllers/notifications.js',
     './controllers/auth.js',
-    './models/project.js'
+    './models/project.js',
+    './models/task.js'
 ).then(function ($) {
         steal.bind('ready', function () {
             //initializing controllers
@@ -20,7 +21,12 @@ steal(
             $('.login_form').auth();
             Project.findAll({}, function (projects) {
                 $('[data-controller=project]').project({projects: projects});
-                $('[data-controller=task]').task();
+
+                $.each(projects, function(i, item){
+                   $('[data-project-id='+ item.id+'] [data-controller=task]').task({tasks:item.tasks})
+                });
+
+
                 $('[data-controller=notifications]').notifications();
                 $('[data-controller=windows]').windows();
                 $('[data-controller=activity]').activity(window.spinnerConfig);

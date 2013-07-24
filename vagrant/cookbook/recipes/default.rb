@@ -80,15 +80,20 @@ execute "check if date.timezone is UTC in /etc/php5/cli/php.ini?" do
 end
 
 bash "Running composer install and preparing the vendors repository" do
-  not_if "test -e /vagrant/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Resources/public"
+  not_if "test -e /mnt/RubyGarageTask/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Resources/public"
   user "vagrant"
   cwd "/mnt/RubyGarageTask"
   code <<-EOH
     set -e
     curl -s https://getcomposer.org/installer | php
-    COMPOSER_VENDOR_DIR="/var/tmp/vendor" php composer.phar install --dev --prefer-dist
-    php app/console doctrine:database:create
-    php app/console doctrine:schema:create
-    php app/console fos:user:create username test@example.com securepassword
+    COMPOSER_VENDOR_DIR="/mnt/RubyGarageTask/vendor" php composer.phar install --dev --prefer-dist
   EOH
+end
+
+execute  "Create database" do
+  cwd "/mnt/RubyGarageTask"
+  command "whoami && php app/console doctrine:database:create --no-debug && php app/console doctrine:schema:create --no-debug && php app/console fos:user:create testuser test@test.com securepassword"
+  ignore_failure true
+  action :run
+
 end

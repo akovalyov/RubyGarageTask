@@ -59,6 +59,11 @@ steal('jquery/controller').then(function ($) {
                 project: project
             }));
         },
+        /**
+         *
+         * @param el
+         * @param ev
+         */
         '.project_title .project_delete click': function (el, ev) {
             var that = this;
             var project_id = el.parents("[data-project-id]").attr('data-project-id');
@@ -72,6 +77,11 @@ steal('jquery/controller').then(function ($) {
             })
 
         },
+        /**
+         *
+         * @param el
+         * @param ev
+         */
         '.project_title form submit': function (el, ev) {
             ev.preventDefault();
             var that = this;
